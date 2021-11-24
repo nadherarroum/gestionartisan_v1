@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class RegistrationController extends AbstractController
 {
-    #[Route('/register', name: 'app_register')]
+    #[Route('/register', name: 'app_register' , methods: ['GET', 'POST'])]
     public function register(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
@@ -44,11 +44,13 @@ class RegistrationController extends AbstractController
             return $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
-                $request
+                $request,
+                $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER),
             );
         }
 
         return $this->render('registration/register.html.twig', [
+            'user' => $user,
             'registrationForm' => $form->createView(),
         ]);
     }
