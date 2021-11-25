@@ -21,33 +21,88 @@
 
             <!-- Form -->
             <form class="mb-6">
+            {{ form_start(registrationForm) }}
+              <!-- Role -->
+              <div class="form-group">
+                <label class="form-label" for="roles">
+                  Who are you ?
+                </label>
+                <select>
+                  <option value="ROLE_CLIENT">Client</option>
+                  <option value="ROLE_USER">Artisan</option>
+                </select>
+              </div>
+              
+              <!-- Nom -->
+              <div class="form-group">
+                <label class="form-label" for="nom">
+                  {{ form_label(registrationForm.nom) }}
+                </label>
+                {{ form_widget(registrationForm.nom) }}
+              </div>
 
+              <!-- Prenom -->
+              <div class="form-group">
+                <label class="form-label" for="prenom">
+                  {{ form_label(registrationForm.prenom) }}
+                </label>
+                {{ form_widget(registrationForm.prenom) }}
+              </div>
+
+              <!-- CIN -->
+              <div class="form-group">
+                <label class="form-label" for="cin">
+                  {{ form_label(registrationForm.cin) }}
+                </label>
+                {{ form_widget(registrationForm.cin) }}
+              </div>
+
+              <!-- Telephone -->
+              <div class="form-group">
+                <label class="form-label" for="telephone">
+                  {{ form_label(registrationForm.telephone) }}
+                </label>
+                {{ form_widget(registrationForm.telephone) }}
+              </div>
+              
+              <!-- Address -->
+              <div class="form-group">
+                <label class="form-label" for="address">
+                  {{ form_label(registrationForm.address) }}
+                </label>
+                {{ form_widget(registrationForm.address) }}
+              </div>
+              
               <!-- Email -->
               <div class="form-group">
                 <label class="form-label" for="email">
-                  Email Address
+                  {{ form_label(registrationForm.email) }}
                 </label>
-                <input type="email" class="form-control" id="email" placeholder="name@address.com">
+                <!--input type="email" class="form-control" id="email" placeholder="name@address.com"-->
+                {{ form_widget(registrationForm.email) }}
               </div>
+              
 
               <!-- Password -->
               <div class="form-group mb-5">
                 <label class="form-label" for="password">
-                  Password
+                  {{ form_label(registrationForm.plainPassword) }}
                 </label>
-                <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                <!--input type="password" class="form-control" id="password" placeholder="Enter your password"-->
+                {{ form_widget(registrationForm.plainPassword) }}
               </div>
 
-              <!-- Submit -->
-              <button class="btn w-100 btn-primary" type="submit">
-                Sign up
-              </button>
+              <!-- SUBMIT -->
+              <div class="form-group mb-0">
+                {{ form_widget(registrationForm.register) }}
+              </div>
 
+            {{ form_end(registrationForm) }}
             </form>
 
             <!-- Text -->
             <p class="mb-0 fs-sm text-center text-muted">
-              Already have an account? <a href="signin.html">Log in</a>.
+              Already have an account? <a href="{{ path('admin') }}">Log in</a>.
             </p>
 
           </div>
