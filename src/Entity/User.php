@@ -65,14 +65,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $address;
 
     /**
-     * @ORM\OneToMany(targetEntity=Roles::class, mappedBy="userRole")
+     * @ORM\OneToOne(targetEntity=Roles::class, mappedBy="userRole", cascade={"persist", "remove"})
      */
     private $userRole;
-
-    public function __construct()
-    {
-        $this->userRole = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -223,32 +218,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Roles[]
-     */
-    public function getUserRole(): Collection
+    public function getUserRole(): ?Roles
     {
         return $this->userRole;
     }
 
-    public function addUserRole(Roles $userRole): self
+    public function setUserRole(?Roles $userRole): self
     {
-        if (!$this->userRole->contains($userRole)) {
-            $this->userRole[] = $userRole;
+        // unset the owning side of the relation if necessary
+        if ($userRole === null && $this->userRole !== null) {
+            $this->userRole->setUserRole(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($userRole !== null && $userRole->getUserRole() !== $this) {
             $userRole->setUserRole($this);
         }
 
-        return $this;
-    }
-
-    public function removeUserRole(Roles $userRole): self
-    {
-        if ($this->userRole->removeElement($userRole)) {
-            // set the owning side to null (unless already changed)
-            if ($userRole->getUserRole() === $this) {
-                $userRole->setUserRole(null);
-            }
-        }
+        $this->userRole = $userRole;
 
         return $this;
     }

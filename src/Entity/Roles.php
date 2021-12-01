@@ -18,12 +18,12 @@ class Roles
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=255)
      */
-    private $roleTitle;
+    private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="userRole")
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="userRole", cascade={"persist", "remove"})
      */
     private $userRole;
 
@@ -32,14 +32,14 @@ class Roles
         return $this->id;
     }
 
-    public function getRoleTitle(): ?string
+    public function getTitle(): ?string
     {
-        return $this->roleTitle;
+        return $this->title;
     }
 
-    public function setRoleTitle(string $roleTitle): self
+    public function setTitle(string $title): self
     {
-        $this->roleTitle = $roleTitle;
+        $this->title = $title;
 
         return $this;
     }
@@ -55,6 +55,5 @@ class Roles
 
         return $this;
     }
-
 
 }
