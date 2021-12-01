@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -61,6 +63,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="text")
      */
     private $address;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Roles::class, mappedBy="userRole", cascade={"persist", "remove"})
+     */
+    private $userRole;
 
     public function getId(): ?int
     {
@@ -207,6 +214,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getUserRole(): ?Roles
+    {
+        return $this->userRole;
+    }
+
+    public function setUserRole(?Roles $userRole): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($userRole === null && $this->userRole !== null) {
+            $this->userRole->setUserRole(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($userRole !== null && $userRole->getUserRole() !== $this) {
+            $userRole->setUserRole($this);
+        }
+
+        $this->userRole = $userRole;
 
         return $this;
     }
