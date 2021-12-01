@@ -62,6 +62,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $address;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Roles::class, inversedBy="userRole")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $userRole;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -207,6 +213,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getUserRole(): ?Roles
+    {
+        return $this->userRole;
+    }
+
+    public function setUserRole(?Roles $userRole): self
+    {
+        $this->userRole = $userRole;
 
         return $this;
     }
