@@ -12,46 +12,27 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\EntityType;
 
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register' , methods: ['GET', 'POST'])]
-    public function register(
-        Request $request,
-        UserPasswordHasherInterface $userPasswordHasher,
-        UserAuthenticatorInterface $userAuthenticator,
-        LoginAppAuthenticator $authenticator,
-        EntityManagerInterface $entityManager
-    ): Response
+    public function register(): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-            $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
-
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request,
-                $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER),
-            );
-        }
-
-        return $this->render('registration/register.html.twig', [
-            'user' => $user,
-            'registrationForm' => $form->createView(),
-        ]);
+        $form= $this->createFormBuilder()
+            ->add('email',EmailType::class)
+            ->add('roles',EntityType::class)
+            ->add('password')
+            ->add('nom',TextType::class)
+            ->add('prenom',TextType::class)
+            ->add('cin',TextType::class)
+            ->add('telephone',TextType::class)
+            ->add('address',TextareaType::class)
+            ->getForm();
+        
+        return $this->$this->renderForm('registration/register.html.twig', compact('form'));
     }
 }

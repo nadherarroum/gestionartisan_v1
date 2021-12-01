@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+
 
 class UserType extends AbstractType
 {
@@ -17,7 +17,7 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email',EmailType::class)
-            ->add('roles',CollectionType::class)
+            //->add('roles',CollectionType::class)
             ->add('password')
             ->add('nom',TextType::class)
             ->add('prenom',TextType::class)
